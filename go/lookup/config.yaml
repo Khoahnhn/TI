@@ -1,0 +1,51 @@
+app:
+  address: <app-address>
+api:
+  api_enrichment: <api-enrichment-url>
+adapter:
+  elastic:
+    enrichment:
+      address: <elastic-address>
+      auth:
+        enable: false
+    udm:
+      address: <elastic-address>
+      auth:
+        enable: false
+  kafka:
+    topics:
+      collect_enrichment_topic: <topic>
+      collect_evaluate_topic: <topic>
+      dns_input_topic: <topic>
+    producers:
+      enrichment:
+        brokers: <kafka-address>
+        auth:
+          enable: false
+          mechanism: ""
+          username: ""
+          password: ""
+        tls:
+          enable: false
+          insecure_skip_verify: false
+          cert_file: ""
+          key_file: ""
+          ca_file: ""
+        async: true      
+      evaluate:
+        brokers: <kafka-address>
+        auth:
+          enable: false
+          mechanism: ""
+          username: ""
+          password: ""
+        tls:
+          enable: false
+          insecure_skip_verify: false
+          cert_file: ""
+          key_file: ""
+          ca_file: ""
+        async: true
+  resty:
+    timeout: <time-seconds>
+    secure: false

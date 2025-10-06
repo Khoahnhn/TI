@@ -1,0 +1,9 @@
+env.JENKINS_SONAR_ID="ws-lookup"
+env.JENKINS_SCA_ID="ws-lookup"
+env.JENKINS_PROJECT_NAME="ws-lookup"
+env.jenkins_skip_build=false
+env.jenkins_skip_ut=true
+env.jenkins_skip_sonarqube=true
+env.jenkins_skip_vul_check=true
+env.jenkins_skip_checkmarx=true
+env.jenkins_skip_push=false

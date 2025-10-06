@@ -1,0 +1,35 @@
+dir: "model/mocks/"
+with-expecter: false
+packages:
+  gitlab.viettelcyber.com/awesome-threat/library/udm:
+    config:
+      outpkg: "mocks"
+      filename: "mock_UDMRepository.go"
+    interfaces:
+      Repository:
+        configs:
+          - mockname: "MockUDMRepository"
+  gitlab.viettelcyber.com/awesome-threat/library/adapter/kafka:
+    config:
+      outpkg: "mocks"
+      filename: "mock_KafkaProducer.go"
+    interfaces:
+      Producer:
+        configs:
+          - mockname: "MockKafkaProducer"
+  ws-lookup/adapter/resty:
+    config:
+      outpkg: "mocks"
+      filename: "mock_RestyClient.go"
+    interfaces:
+      Client:
+        configs:
+          - mockname: "MockRestyClient"
+  ws-lookup/adapter/elastic:
+    config:
+      outpkg: "mocks"
+      filename: "mock_CVERepository.go"
+    interfaces:
+      CVERepository:
+        configs:
+          - mockname: "MockCVERepository"
