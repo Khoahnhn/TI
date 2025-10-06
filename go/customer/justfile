@@ -1,0 +1,14 @@
+mock:
+    mockgen -source=./adapter/mongo/interface.go -package=mock_repo -destination=./mock/repo/mock_mongo.go
+    mockgen -source=./adapter/service/interface.go -package=mock_service -destination=./mock/service/mock_mail.go
+    mockgen -source=handler/interface.go \
+        -destination=mock/handler/mock_manager_user_handler.go \
+        -package=mock_handler
+    mockgen --destination=./mock/package/mock_mongo.go --package=mock_package gitlab.viettelcyber.com/awesome-threat/library/adapter/mongo Database
+test:
+	go test ./... -v -coverprofile="coverage_report/coverage.out"
+	go tool cover -func="coverage_report/coverage.out"
+	go tool cover -html="coverage_report/coverage.out"
+
+test-fail:
+    go test ./... | grep FAIL
