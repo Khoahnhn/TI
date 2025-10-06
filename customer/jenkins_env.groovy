@@ -1,9 +1,0 @@
-env.JENKINS_SONAR_ID="ws-customer"
-env.JENKINS_SCA_ID="ws-customer"
-env.JENKINS_PROJECT_NAME="ws-customer"
-env.jenkins_skip_build=false
-env.jenkins_skip_ut=true
-env.jenkins_skip_sonarqube=false
-env.jenkins_skip_vul_check=true
-env.jenkins_skip_checkmarx=true
-env.jenkins_skip_push=false
