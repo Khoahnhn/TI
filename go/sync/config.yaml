@@ -1,0 +1,21 @@
+app:
+  enable_nvd_queue: false
+adapter:
+  elastic:
+    address: "http://localhost:9211"
+    auth:
+      enable: false
+      username:
+      password:
+  mongo:
+    uri: "mongodb://xxxxxx:xxxxx@localhost:27019"
+    db: "threat_report"
+  rabbit:
+    address: "localhost:5372"
+    username: "ti-crawler"
+    password: "xxxxxxx"
+  redis:
+    address: "localhost:6379"
+    password: "vtios"
+    db: 13
+proxy: http://localhost:3128

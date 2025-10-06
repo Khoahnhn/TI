@@ -1,0 +1,22 @@
+core:
+  proxy: "http://127.0.0.1:3128"
+  ti_email_api: "http://localhost:11446/send"
+  test: true
+  max_record: 500
+  api_vul: "http://localhost:5001/api/v1/vulnerability"
+  api_export_pdf_list_cve: "http://test-export.ti.visc.com/api/export-cve-list/pdf"
+  api_export_pdf_detail_cve: "http://test-export.ti.visc.com/api/export-cve/pdf"
+  api_get_organization_info: "http://localhost:8936/customer/test/organization"
+  api_list_user_from_organization: "http://localhost:9095/v1/api/user"
+  portal_public_url: "http://desktop.ti.visc.com/#/vulnerability-alert"
+  log_level: 5 # logging level debug
+logger:
+  level: debug
+  devMode: false
+  encoder: json
+adapter:
+  kafka:
+    bootstrap_servers: localhost:9093
+    topic: "alert-mail-test"
+    group_id: "mail-local"
+    num_snapshot_worker: 1
