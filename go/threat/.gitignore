@@ -1,0 +1,8 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+.vscode
+start.exe
+tunnel/*
+__debug_*
+
+config-dev.yaml

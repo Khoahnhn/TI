@@ -1,0 +1,108 @@
+app:
+  debug: true
+  address: "0.0.0.0:8834"
+  api_key: "abc"
+  worker: 1
+  predict:
+    trusted_avs:
+      - AVG
+      - Avast
+      - Avira
+      - BitDefender
+      - Fortinet
+      - Kaspersky
+      - Microsoft
+      - Paloalto
+      - Sophos
+      - TrendMicro
+      - McAfeeD
+    threshold_av: 5
+max_size: 100
+number_worker: 100
+api:
+  timeout: 2
+  route:
+    enrichment: "http://api.vti.com/enrichment-service"
+    export: "http://api.vti.com/export-service"
+    mail: "http://mail.vti.com"
+    customer: "http://api.staging.ti.visc.com/customer-service"
+    api_group: "http://api.staging.ti.visc.com/organization/%s"
+  credential:
+    enrichment:
+      enable: true
+      username: "soc247.enrichment@viettel.com.vn"
+      password: "4e146e1e798c3404bca194a64"
+connector:
+  mongo:
+    account:
+      address: "127.0.0.1:27011/?directConnection=true"
+      auth:
+        enable: true
+        username: "mg-admin"
+        password: "vtiplatform"
+        auth_db: "admin"
+    enduser:
+      address: "127.0.0.1:27011/?directConnection=true"
+      auth:
+        enable: false
+        username: ""
+        password: ""
+        auth_db: ""
+    threat_report:
+      address: "127.0.0.1:27018"
+      auth:
+        enable: false
+        username: ""
+        password: ""
+        auth_db: ""
+  elastic:
+    enduser:
+      address: "http://127.0.0.1:9210"
+      auth:
+        enable: false
+    enrichment:
+      address: "http://127.0.0.1:9210"
+      auth:
+        enable: false
+  rabbit:
+    crawler:
+      secure: false
+      address: "127.0.0.1:5611"
+      username: "vti"
+      password: "vtiplatform"
+  redis:
+    general:
+      address: "127.0.0.1:6369"
+      password: "threat"
+      db: 13
+  kafka:
+    topics:
+      udm_enrichment_topic: <topic>
+      udm_evaluate_topic: <topic>
+      taxii_sync_topic: <topic>
+    producers:
+      enrichment:
+        brokers: "localhost:9092"
+        auth:
+          enable: false
+        tls:
+          enable: false
+          insecure_skip_verify: false
+          ca_file: ""
+        async: true
+      evaluate:
+        brokers: "localhost:9092"
+        auth:
+          enable: false
+        tls:
+          enable: false
+          insecure_skip_verify: false
+        async: true
+      threat_feed:
+        brokers: "localhost:9092"
+        auth:
+          enable: false
+        tls:
+          enable: false
+          insecure_skip_verify: false
+        async: true

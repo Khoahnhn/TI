@@ -1,0 +1,81 @@
+###VAriables
+@HOST=http://localhost:8934
+@Cookie=access_token_cookie=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJKSHlGOTJxOHlpMWtCSnkzd3ZiR3ZzZTdnSmxnSHpRSk8tZlM3MXhxVWxVIn0.eyJleHAiOjE3NTA4NTI3NzQsImlhdCI6MTc1MDgxNjc3NCwiYXV0aF90aW1lIjoxNzUwODE2Nzc0LCJqdGkiOiIyOTNlMWJjOC1lMzgzLTQ4NDUtODAzYi1lNDQ2YzhmZmNjYWYiLCJpc3MiOiJodHRwOi8vYXV0aC12My5vcy50aS52aXNjLmNvbS9hdXRoL3JlYWxtcy9vcGVyYXRpb24tdjMiLCJhdWQiOlsidnRpIiwiYWNjb3VudCJdLCJzdWIiOiI1ZTMzN2JjNS1mNmQ4LTQwY2EtOTcyZS02MWI3YWI4ODU2MGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJ2dGkiLCJzZXNzaW9uX3N0YXRlIjoiNDIwMTgyOTQtZjU3YS00OWY0LWJjODItMzQ1MGIwZTNlNzdjIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtb3BlcmF0aW9uLXYzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBncm91cCBhdWRpZW5jZSBwcm9maWxlIiwic2lkIjoiNDIwMTgyOTQtZjU3YS00OWY0LWJjODItMzQ1MGIwZTNlNzdjIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoiSG9hbiBUcmluaCIsInByZWZlcnJlZF91c2VybmFtZSI6ImhvYW50djE2IiwiZ2l2ZW5fbmFtZSI6IkhvYW4iLCJmYW1pbHlfbmFtZSI6IlRyaW5oIiwiZW1haWwiOiJob2FudHYxNkB2aWV0dGVsLmNvbS52biIsImdyb3VwIjpbXX0.C2WiBdiJlqy9vgO4NdV1l9R9Vrif_QgnesTcND2ilhMLZroU-k6j5wfO1B6BaAXVBddIiIHhR8dG-LcECFQRtei0iH_KItfFbj7No1ZJ96zT5P_vVfPAfKrsKrcFRi8w4ly2TPOwChVuTZ7lkWtAv-IpIbeaiwbhyi2rT7MGGtozp_2LJ57khnIazPeoxPqeATWM8CgZfGCOAvFwa1sbiPSO5QBQv9oulx8IVPEvMYBzB8CGG2mU3-ltdZe4FV54F7GbkhBUiTu1BcIAp_qOKAIWnG_dsJ-WjQn73EEuBps0ONpFzEVtOMJ-Mpg4Np8CNqdMKbC4okYt2Ic7OH4Glg; refresh_token_cookie=PUmPzJTzSblKWKTZZjfJk8WyMAyz4wjr2uY6/IqqocmxVa5L0GDOXnmfKuCmtH5YDsnp1bMq7zCiISouLfDD+2R10RY7NU7UpJWJLkpohkya6WACYOihdjdUbR3nTpjtQUEji7j/SAMjPIWFvW3pr0k6Unu53io8rbhu35aqGLYThD+IKbKKCL8bUbDSP/zZS/oMgGSam0jJUleldRtnhoJG2PJOjo7UayqdzQNT8AbvRGot/gDx+v3+hivO2dyjbqXXXOuE7C+tFvNqixOb1bMi/CGSXoimHajPcg8bTe/tegsSXuMkyijsplXt/BzPDV95r9wmtaVY4UFN5Baz2yAQulZjUCiAU7WShKOdUIFp+By/G7S4DmfRZy7X7fVtcAll6bTcVaSE+4bCCYrsWeKBVZgexbl/CXV1GfJgsA0El8IUuFXFLaisigAzPZbBh+njrbzFbkgTUMsSwyqljbc0v5JEkbyILTtacK2z3mV5YaZ7y1y1BejqJ6iOkmtBr2T7OInI+IAK+PUWw8UsGogSm0hODGlkqkUQR3cn8rSTScXCy968BsMmRf3z0WlrpV6AdkyUGBiOhA9eZ6cmNBgDac0FrCUG76BWXkpLSEXmhPWD1pgqMGbAT2jjjR+qYGDJONiXVVIDw1lIz5mwI6h00ZCXUYQ5PGFbm2+zgPVebmgdeBVUpWxLFZuL
+####
+
+### TEST
+GET {{HOST}}/threat/test/vulnerability/cve/CVE-2025-24100/history-epss?size=1
+Cookie: {{Cookie}}
+###
+
+### Get cve detail
+GET {{HOST}}/threat/test/vulnerability/cve/CVE-2025-24010
+Cookie: {{Cookie}}
+###
+
+### Confirm
+POST {{HOST}}/threat/test/vulnerability/cve/CVE-2025-53825/confirm
+Cookie: {{Cookie}}
+Content-Type: application/json
+
+{
+    "status": 2,
+    "checklist": {
+        "metric": {
+            "affect": 2,
+            "exploit": 3,
+            "patch": 2,
+            "ability": 2,
+            "condition": 3
+        },
+        "point": 12
+    },
+    "description": "",
+    "language": "en"
+}
+###
+
+### Edit
+PUT {{HOST}}/threat/test/vulnerability/cve/CVE-2025-53825
+Cookie: {{Cookie}}
+Content-Type: application/json
+
+{
+    "published": 1749908344000,
+    "epss": {
+        "score": null,
+        "percentile": null
+    },
+    "description": "<p>adfsdf</p>",
+    "reference": "bjhgjgh",
+    "patch": "c",
+    "lang": "vi",
+    "match": [
+        "cpe:2.3:a:0123:test:1.0:1.0:*:*:*:*:*:*"
+    ],
+    "cvss": {
+        "cvss_v4": {
+            "score": 9,
+            "version": "4.0",
+            "severity": 4,
+            "vector_string": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:P/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N/E:P",
+            "source": "NVD"
+        },
+        "cna": {
+            "id": "4.0CNA",
+            "score": 9,
+            "version": "4.0",
+            "severity": 4,
+            "vector_string": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:P/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N/E:P",
+            "source": "CNA"
+        }
+    },
+    "cwe": [
+        {
+            "id": "CWE-79",
+            "name": "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')",
+            "link": "https://cwe.mitre.org/data/definitions/79.html"
+        }
+    ]
+}
+###

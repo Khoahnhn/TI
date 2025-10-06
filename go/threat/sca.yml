@@ -1,0 +1,13 @@
+version: 2
+cli:
+  server: https://sca.viettelcyber.com
+  fetcher: custom
+  project: https://gitlab.viettelcyber.com/ti-micro/ws-threat
+analyze:
+  modules:
+    - name: .
+      type: go
+      target: .
+      path: .
+      options:
+        strategy: gomodules

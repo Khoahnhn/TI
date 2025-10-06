@@ -1,0 +1,19 @@
+test:
+	go test ./... -v -coverprofile="coverage_report/coverage.out"
+	go tool cover -func="coverage_report/coverage.out"
+	go tool cover -html="coverage_report/coverage.out"
+
+test-fail:
+	go test ./... | grep FAIL
+
+mockery:
+     mockery --name=GlobalRepository --dir=adapter/elastic --output=mocks/repo/elastic --outpkg=mocks --with-expecter
+     mockery --name=EnrichmentRepository --dir=adapter/elastic --output=mocks/repo/elastic --outpkg=mocks --with-expecter
+     mockery --name=CVERepository --dir=adapter/elastic --output=mocks/repo/elastic --outpkg=mocks --with-expecter
+     mockery --name=CVELifeCycleV2Repository --dir=adapter/elastic --output=mocks/repo/elastic --outpkg=mocks --with-expecter
+     mockery --name=CVEEPSSHistoryRepository --dir=adapter/elastic --output=mocks/repo/elastic --outpkg=mocks --with-expecter
+     mockery --name=HistoryRepository --dir=adapter/elastic --output=mocks/repo/elastic --outpkg=mocks --with-expecter
+     mockery --name=GlobalRepository --dir=adapter/mongo --output=mocks/repo/mongo --outpkg=mocks --with-expecter
+     mockery --name=AccountRepository --dir=adapter/mongo --output=mocks/repo/mongo --outpkg=mocks --with-expecter
+     mockery --name=EnduserRepository --dir=adapter/mongo --output=mocks/repo/mongo --outpkg=mocks --with-expecter
+     mockery --name=ThreatReportRepository --dir=adapter/mongo --output=mocks/repo/mongo --outpkg=mocks --with-expecter
