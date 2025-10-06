@@ -1,0 +1,13 @@
+version: 2
+cli:
+  server: https://sca.viettelcyber.com
+  fetcher: custom
+  project: https://gitlab.viettelcyber.com/threat-intelligence/ti-dissemination/dissem-worker-alert-easm
+analyze:
+  modules:
+    - name: .
+      type: go
+      target: .
+      path: .
+      options:
+        strategy: gomodules

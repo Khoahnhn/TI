@@ -1,0 +1,17 @@
+api:
+  api_send_mail: "http://mail.ti.visc.com/send"
+  timezone: Asia/Ho_Chi_Minh
+  api_get_organization_info: "http://api.os.ti.visc.com/customer-service/organization/:tenantId"
+  api_list_user_from_organization: "http://api.os.ti.visc.com/setting-service/v1/api/user"
+  api_issue: "http://api.os.ti.visc.com/easm-issue-api-service/issues/anomaly_open_port/search"
+  api_severity_stats: "http://api.os.ti.visc.com/easm-issue-api-service/internal/issues/stats"
+  public_easm_issue_api_url: "http://platform.os.ti.visc.com/#/easm/issues"
+  x-secret-key-get-severity: "vcs"
+adapter:
+  consumer:
+    brokers: "10.255.251.178:9092"
+    topic: "alert-setting-schedule"
+    group: "dissem-worker-alert-databreach-group"
+    strategy: "roundrobin"
+    offset: "oldest"
+

@@ -1,0 +1,10 @@
+run:
+  CONFIG_FILE_PATH=./config-dev.yaml go run .
+
+test:
+	go test ./... -v -coverprofile="coverage_report/coverage.out"
+	go tool cover -func="coverage_report/coverage.out"
+	go tool cover -html="coverage_report/coverage.out"
+
+mock:
+	mockgen -source=./internal/services/http.go -package=mock -destination=./mocks/services/mock_http.go

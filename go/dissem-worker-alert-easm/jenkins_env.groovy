@@ -1,0 +1,9 @@
+env.JENKINS_SONAR_ID="dissem-worker-alert-easm"
+env.JENKINS_SCA_ID="dissem-worker-alert-easm"
+env.HARBOR_REPO="vti"
+env.jenkins_skip_build=false
+env.jenkins_skip_ut=true
+env.jenkins_skip_sonarqube=false
+env.jenkins_skip_vul_check=false
+env.jenkins_skip_checkmarx=false
+env.jenkins_skip_push=false
