@@ -118,6 +118,7 @@ func (inst *rolesRepository) UpdateByID(ctx context.Context, id string, document
 		"$set": bson.M{
 			"editor":               document.Editor,
 			"mass":                 document.Mass,
+			"description":          document.Description,
 			"level":                document.Level,
 			"month":                document.Month,
 			"limit_alert":          document.LimitAlert,

@@ -403,17 +403,16 @@ func (m *ManagerUserHandler) genApiKey(isActive bool, role *model.Role, org *mod
 }
 
 func (m *ManagerUserHandler) genUserData(ctx context.Context, req model.StoreUserPublicDTO, user *model.UserV3) (*model.Organization, *model.Role, error) {
-	isActive := true
-	org, err := m.mongo.Account().GroupUser().GetOrg(ctx, req.GroupID, &isActive)
+	org, err := m.mongo.Account().GroupUser().GetOrg(ctx, req.GroupID, nil)
 	if err != nil {
 		m.logger.Errorf("failed find organization: %v", err)
-		return nil, nil, fmt.Errorf("organization not found or inactive")
+		return nil, nil, fmt.Errorf("organization not found")
 	}
 
 	role, err := m.mongo.Account().Roles().GetByName(ctx, org.Role)
 	if err != nil {
 		m.logger.Errorf("failed find role: %v", err)
-		return nil, nil, fmt.Errorf("role not found")
+		return nil, nil, fmt.Errorf("package not found")
 	}
 	user.FirstName = req.FirstName
 	user.LastName = req.LastName

@@ -624,6 +624,20 @@ func (mr *MockFeaturesRepositoryMockRecorder) UpdateByID(ctx, id, document any) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateByID", reflect.TypeOf((*MockFeaturesRepository)(nil).UpdateByID), ctx, id, document)
 }
 
+// UpdateMany mocks base method.
+func (m *MockFeaturesRepository) UpdateMany(ctx context.Context, query *bson.M, update bson.A, upsert bool) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMany", ctx, query, update, upsert)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMany indicates an expected call of UpdateMany.
+func (mr *MockFeaturesRepositoryMockRecorder) UpdateMany(ctx, query, update, upsert any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMany", reflect.TypeOf((*MockFeaturesRepository)(nil).UpdateMany), ctx, query, update, upsert)
+}
+
 // MockRolesRepository is a mock of RolesRepository interface.
 type MockRolesRepository struct {
 	ctrl     *gomock.Controller
@@ -982,7 +996,7 @@ func (mr *MockGroupUserRepositoryMockRecorder) RunAggPipeline(ctx, pipeline, res
 }
 
 // UpdateMany mocks base method.
-func (m *MockGroupUserRepository) UpdateMany(ctx context.Context, query bson.M, update bson.A, upsert bool) error {
+func (m *MockGroupUserRepository) UpdateMany(ctx context.Context, query *bson.M, update bson.A, upsert bool) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateMany", ctx, query, update, upsert)
 	ret0, _ := ret[0].(error)

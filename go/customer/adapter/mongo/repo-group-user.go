@@ -160,9 +160,9 @@ func (inst *groupUserRepository) UpdateOrg(ctx context.Context, org *model.Organ
 	return inst.con.UpdateByID(database, collection, org.Id, bson.M{"$set": org})
 }
 
-func (inst *groupUserRepository) UpdateMany(ctx context.Context, query bson.M, update bson.A, upsert bool) error {
+func (inst *groupUserRepository) UpdateMany(ctx context.Context, query *bson.M, update bson.A, upsert bool) error {
 	database, collection := inst.Name()
-	return inst.con.UpdateMany(database, collection, &query, update, upsert)
+	return inst.con.UpdateMany(database, collection, query, update, upsert)
 }
 
 func (inst *groupUserRepository) FindAllOrgs(ctx context.Context, query *bson.M, sorts []string) ([]*model.Organization, error) {

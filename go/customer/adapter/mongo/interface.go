@@ -57,6 +57,7 @@ type (
 		Aggregate(ctx context.Context, pipeline []*bson.M, result any) error
 		GetByName(ctx context.Context, name string) (*model.Feature, error)
 		UpdateByID(ctx context.Context, id string, document *model.Feature) error
+		UpdateMany(ctx context.Context, query *bson.M, update bson.A, upsert bool) error
 		GetByCode(ctx context.Context, code []string, offset, size int64) ([]*model.Feature, error)
 		Count(ctx context.Context, query *bson.M) (int64, error)
 	}
@@ -86,7 +87,7 @@ type (
 		GetOrg(ctx context.Context, id string, isActive *bool) (*model.Organization, error)
 		GetByRole(ctx context.Context, role string) (*model.GroupUser, error)
 		UpdateOrg(ctx context.Context, org *model.Organization) error
-		UpdateMany(ctx context.Context, query bson.M, update bson.A, upsert bool) error
+		UpdateMany(ctx context.Context, query *bson.M, update bson.A, upsert bool) error
 		FindAllOrgs(ctx context.Context, query *bson.M, sorts []string) ([]*model.Organization, error)
 	}
 

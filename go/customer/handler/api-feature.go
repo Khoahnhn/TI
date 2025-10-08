@@ -15,6 +15,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
 	"os"
+	"time"
 )
 
 type FeatureHandler struct {
@@ -98,6 +99,8 @@ func (inst *FeatureHandler) Edit(c echo.Context) error {
 		}
 		return rest.JSON(c).Code(rest.StatusInternalServerError).Log(err).Go()
 	}
+	oldAncestors := saved.Ancestors
+	currentCode := saved.Code
 	if body.ParentFeature != "" {
 		parentFeature, err := inst.validateParentFeature(body.ParentFeature, body.ID, saved.ParentID)
 		if err != nil {
@@ -109,6 +112,8 @@ func (inst *FeatureHandler) Edit(c echo.Context) error {
 			return rest.JSON(c).Code(rest.StatusInternalServerError).Log(err).Go()
 		}
 		saved.Ancestors = slice.String(append(parentFeature.Ancestors, body.ID)).Unique().Extract()
+	} else {
+		saved.Ancestors = []string{body.ID}
 	}
 	if len(body.Permissions) > 0 {
 		saved.Actions = slice.String(append(saved.Actions, body.Permissions...)).Unique().Extract()
@@ -122,6 +127,11 @@ func (inst *FeatureHandler) Edit(c echo.Context) error {
 	saved.ParentID = body.ParentFeature
 	if err = inst.mongo.Account().Features().UpdateByID(context.Background(), saved.ID, saved); err != nil {
 		return rest.JSON(c).Code(rest.StatusInternalServerError).Log(err).Go()
+	}
+	if !areAncestorsEqual(oldAncestors, saved.Ancestors) {
+		if err := inst.bulkUpdateDescendantsAncestors(context.Background(), currentCode, saved.Ancestors, editor); err != nil {
+			return rest.JSON(c).Code(rest.StatusInternalServerError).Log(err).Go()
+		}
 	}
 	return rest.JSON(c).Code(rest.StatusOK).Body(saved.ID).Go()
 }
@@ -187,7 +197,7 @@ func (inst *FeatureHandler) GetAllFeature(c echo.Context) error {
 	return rest.JSON(c).Code(rest.StatusOK).Body(map[string]interface{}{"data": results, "total": count}).Go()
 }
 
-func (h *FeatureHandler) validateParentFeature(
+func (inst *FeatureHandler) validateParentFeature(
 	parentFeatureCode string,
 	currentFeatureCode string,
 	currentParentID string,
@@ -198,7 +208,7 @@ func (h *FeatureHandler) validateParentFeature(
 	if parentFeatureCode == currentFeatureCode {
 		return nil, errors.New("feature cannot be parent of itself")
 	}
-	parentFeature, err := h.mongo.Account().Features().GetByName(context.Background(), parentFeatureCode)
+	parentFeature, err := inst.mongo.Account().Features().GetByName(context.Background(), parentFeatureCode)
 	if err != nil {
 		if err.Error() == mg.NotFoundError {
 			return nil, errors.New("parent feature not found")
@@ -234,6 +244,34 @@ func BuildFeatureTree(modules []*model.FeatureWithPermissions) []*model.FeatureW
 		}
 	}
 	return roots
+}
+
+func (inst *FeatureHandler) bulkUpdateDescendantsAncestors(ctx context.Context, code string, newAncestors []string, editor string) error {
+	query := bson.M{
+		"ancestors": bson.M{"$in": []string{code}},
+		"code":      bson.M{"$ne": code},
+	}
+	update := bson.A{bson.M{
+		"$set": bson.M{
+			"ancestors":  newAncestors,
+			"editor":     editor,
+			"updated_at": time.Now().UnixMilli(),
+		},
+	}}
+	err := inst.mongo.Account().Features().UpdateMany(ctx, &query, update, false)
+	return err
+}
+
+func areAncestorsEqual(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
 }
 
 func (inst *FeatureHandler) verifyCode(c echo.Context) (body model.RequestCode, err error) {

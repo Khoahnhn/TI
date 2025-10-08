@@ -309,7 +309,7 @@ func (h *OrganizationHandler) UpdateOrganization(c echo.Context) error {
 	}
 	// Update all descendant's ancestor array to match change
 	err = h.mongo.Account().GroupUser().UpdateMany(c.Request().Context(),
-		bson.M{"$expr": bson.M{
+		&bson.M{"$expr": bson.M{
 			"$eq": bson.A{
 				bson.M{"$slice": bson.A{"$ancestors", 0, len(original.Ancestors)}},
 				original.Ancestors,
@@ -625,6 +625,12 @@ func (h *OrganizationHandler) buildSearchAggPipeline(query *bson.M) []*bson.M {
 		},
 	})
 
+	pipeline = append(pipeline, &bson.M{
+		"$sort": bson.M{
+			"created_time": -1,
+		},
+	})
+
 	return pipeline
 }
 
@@ -771,10 +777,6 @@ func (h *OrganizationHandler) validateStoreOrgRequest(ctx context.Context, reque
 	if err != nil {
 		h.logger.Errorf("failed to get parent with id %v: %v", request.ParentId, err)
 		return http.StatusInternalServerError, err
-	}
-	if !parent.Active {
-		h.logger.Errorf("tried to use invalid parent %v", request.ParentId)
-		return http.StatusBadRequest, errors.New("invalid parent")
 	}
 	request.Parent = parent
 	return 0, nil

@@ -119,6 +119,11 @@ func (inst *featuresRepository) UpdateByID(ctx context.Context, id string, docum
 	return nil
 }
 
+func (inst *featuresRepository) UpdateMany(ctx context.Context, query *bson.M, update bson.A, upsert bool) error {
+	database, collection := inst.Name()
+	return inst.con.UpdateMany(database, collection, query, update, upsert)
+}
+
 func (inst *featuresRepository) Count(ctx context.Context, query *bson.M) (int64, error) {
 	database, collection := inst.Name()
 	// Success

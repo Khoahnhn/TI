@@ -4,6 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"regexp"
+	"strings"
+
 	"github.com/labstack/echo/v4"
 	mg "gitlab.viettelcyber.com/awesome-threat/library/adapter/mongo"
 	"gitlab.viettelcyber.com/awesome-threat/library/clock"
@@ -11,11 +17,6 @@ import (
 	"gitlab.viettelcyber.com/awesome-threat/library/rest"
 	"gitlab.viettelcyber.com/awesome-threat/library/slice"
 	"go.mongodb.org/mongo-driver/bson"
-	"log"
-	"net/http"
-	"os"
-	"regexp"
-	"strings"
 
 	"gitlab.viettelcyber.com/ti-micro/ws-customer/adapter/mongo"
 	"gitlab.viettelcyber.com/ti-micro/ws-customer/defs"
@@ -96,20 +97,20 @@ func (inst *RoleHandler) EditRole(c echo.Context) error {
 		if err.Error() == mg.NotFoundError {
 			return rest.JSON(c).
 				Code(http.StatusNotFound).
-				Message("Role not found!").
-				Log("Role not found").
+				Message("package not found!").
+				Log("package not found").
 				Go()
 		}
 		return rest.JSON(c).Code(rest.StatusInternalServerError).Log(err).Go()
 	}
-	if saved.Mass {
+	if body.Type == defs.PackageTypeMass {
 		paygatePackage, err := inst.mongo.Account().Roles().GetByName(context.Background(), *body.PaygatePackage)
 		if err != nil {
 			if err.Error() != mg.NotFoundError {
 				return rest.JSON(c).Code(rest.StatusInternalServerError).Log(err).Go()
 			}
 		}
-		if paygatePackage != nil {
+		if paygatePackage != nil && paygatePackage.RoleID != body.ID {
 			return rest.JSON(c).Code(rest.StatusBadRequest).
 				Message("Paygate Package already exists in another Package").
 				Log("Paygate Package already exists in another Package").
@@ -172,8 +173,8 @@ func (inst *RoleHandler) DetailRole(c echo.Context) error {
 	if err != nil {
 		if err.Error() == mg.NotFoundError {
 			return rest.JSON(c).Code(rest.StatusNotFound).
-				Message("Role not found").
-				Log("Role not found").
+				Message("package not found").
+				Log("package not found").
 				Go()
 		}
 		return rest.JSON(c).Code(rest.StatusInternalServerError).Log(err).Go()
@@ -196,8 +197,8 @@ func (inst *RoleHandler) DeleteRole(c echo.Context) error {
 		if err.Error() == mg.NotFoundError {
 			return rest.JSON(c).
 				Code(rest.StatusNotFound).
-				Message("role not found!").
-				Log("role not found!").
+				Message("package not found").
+				Log("package not found!").
 				Go()
 		}
 		return rest.JSON(c).Code(rest.StatusInternalServerError).Log(err).Go()

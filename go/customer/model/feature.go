@@ -54,11 +54,12 @@ type (
 	}
 
 	RequestFeatureList struct {
-		Keyword     string   `json:"keyword" mod:"trim"`
-		FeatureCode string   `json:"feature_code" mod:"trim"`
-		Sort        []string `json:"sort"`
-		Size        int64    `json:"size" validate:"numeric,gte=0"`
-		Offset      int64    `json:"offset" validate:"numeric,gte=0"`
+		Keyword       string   `json:"keyword" mod:"trim"`
+		ParentFeature string   `json:"parent_feature" mod:"trim"`
+		FeatureCode   string   `json:"feature_code" mod:"trim"`
+		Sort          []string `json:"sort"`
+		Size          int64    `json:"size" validate:"numeric,gte=0"`
+		Offset        int64    `json:"offset" validate:"numeric,gte=0"`
 	}
 )
 
@@ -81,6 +82,9 @@ func (body *RequestFeatureList) Query() *bson.M {
 			bson.M{"name": bson.M{"$regex": regexSearch, "$options": "i"}},
 			bson.M{"code": bson.M{"$regex": regexSearch, "$options": "i"}},
 		}
+	}
+	if body.ParentFeature != "" {
+		filter["ancestors"] = body.ParentFeature
 	}
 	if len(filter) == 0 {
 		return &bson.M{}

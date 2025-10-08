@@ -83,7 +83,7 @@ type (
 	}
 
 	RequestStoreOrganization struct {
-		TenantId      string        `json:"tenant_id" validate:"required,min=5,max=30,code"`
+		TenantId      string        `json:"tenant_id" validate:"required,min=3,max=30,code"`
 		Description   string        `json:"description"`
 		Active        bool          `json:"status"`
 		ParentId      string        `json:"parent_id" validate:"required"`

@@ -392,6 +392,7 @@ func (g *GetUserDetailV3) BuildPipeline() []*bson.M {
 			"tenant_id":      "$group_info.tenant_id",
 			"package":        "$role_info.description",
 			"mass":           "$role_info.mass",
+			"name":           "$group_info.name",
 		},
 	})
 
