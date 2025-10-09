@@ -146,3 +146,19 @@ func (inst *featuresRepository) GetByCode(ctx context.Context, code []string, of
 	// Success
 	return results, nil
 }
+
+func (inst *featuresRepository) FindDescendantsByCode(ctx context.Context, code string, offset, size int64) ([]*model.Feature, error) {
+	filter := bson.M{
+		"ancestors": bson.M{"$in": []string{code}},
+		"code":      bson.M{"$ne": code},
+	}
+
+	results, err := inst.Find(ctx, &filter, []string{}, offset, size)
+	if err != nil {
+		return nil, err
+	}
+	if len(results) == 0 {
+		return nil, errors.New(mongo.NotFoundError)
+	}
+	return results, nil
+}

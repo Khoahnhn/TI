@@ -100,7 +100,6 @@ func (inst *FeatureHandler) Edit(c echo.Context) error {
 		return rest.JSON(c).Code(rest.StatusInternalServerError).Log(err).Go()
 	}
 	oldAncestors := saved.Ancestors
-	currentCode := saved.Code
 	if body.ParentFeature != "" {
 		parentFeature, err := inst.validateParentFeature(body.ParentFeature, body.ID, saved.ParentID)
 		if err != nil {
@@ -129,7 +128,7 @@ func (inst *FeatureHandler) Edit(c echo.Context) error {
 		return rest.JSON(c).Code(rest.StatusInternalServerError).Log(err).Go()
 	}
 	if !areAncestorsEqual(oldAncestors, saved.Ancestors) {
-		if err := inst.bulkUpdateDescendantsAncestors(context.Background(), currentCode, saved.Ancestors, editor); err != nil {
+		if err := inst.bulkUpdateDescendantsAncestors(context.Background(), saved, editor); err != nil {
 			return rest.JSON(c).Code(rest.StatusInternalServerError).Log(err).Go()
 		}
 	}
@@ -246,20 +245,38 @@ func BuildFeatureTree(modules []*model.FeatureWithPermissions) []*model.FeatureW
 	return roots
 }
 
-func (inst *FeatureHandler) bulkUpdateDescendantsAncestors(ctx context.Context, code string, newAncestors []string, editor string) error {
-	query := bson.M{
-		"ancestors": bson.M{"$in": []string{code}},
-		"code":      bson.M{"$ne": code},
+func (inst *FeatureHandler) bulkUpdateDescendantsAncestors(ctx context.Context, changedNode *model.Feature, editor string) error {
+	descendants, err := inst.mongo.Account().Features().FindDescendantsByCode(ctx, changedNode.Code, 0, 0)
+	if err != nil {
+		return err
 	}
-	update := bson.A{bson.M{
-		"$set": bson.M{
-			"ancestors":  newAncestors,
-			"editor":     editor,
-			"updated_at": time.Now().UnixMilli(),
-		},
-	}}
-	err := inst.mongo.Account().Features().UpdateMany(ctx, &query, update, false)
-	return err
+	codeToNode := map[string]*model.Feature{changedNode.Code: changedNode}
+	for _, node := range descendants {
+		codeToNode[node.Code] = node
+	}
+	for _, node := range descendants {
+		newAncestorsPrefix := changedNode.Ancestors
+		idx := -1
+		for i, code := range node.Ancestors {
+			if code == changedNode.Code {
+				idx = i
+				break
+			}
+		}
+		if idx == -1 {
+			continue
+		}
+		tailAncestors := node.Ancestors[idx+1:]
+		node.Ancestors = append(append([]string{}, newAncestorsPrefix...), changedNode.Code)
+		node.Ancestors = append(node.Ancestors, tailAncestors...)
+		node.Editor = editor
+		node.UpdatedAt = time.Now().UnixMilli()
+		// Update vào DB
+		if err := inst.mongo.Account().Features().UpdateByID(ctx, node.ID, node); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func areAncestorsEqual(a, b []string) bool {

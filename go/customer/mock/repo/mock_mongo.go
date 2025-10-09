@@ -536,6 +536,21 @@ func (mr *MockFeaturesRepositoryMockRecorder) Find(ctx, query, sorts, offset, si
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockFeaturesRepository)(nil).Find), ctx, query, sorts, offset, size)
 }
 
+// FindDescendantsByCode mocks base method.
+func (m *MockFeaturesRepository) FindDescendantsByCode(ctx context.Context, code string, offset, size int64) ([]*model.Feature, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindDescendantsByCode", ctx, code, offset, size)
+	ret0, _ := ret[0].([]*model.Feature)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindDescendantsByCode indicates an expected call of FindDescendantsByCode.
+func (mr *MockFeaturesRepositoryMockRecorder) FindDescendantsByCode(ctx, code, offset, size any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindDescendantsByCode", reflect.TypeOf((*MockFeaturesRepository)(nil).FindDescendantsByCode), ctx, code, offset, size)
+}
+
 // FindMany mocks base method.
 func (m *MockFeaturesRepository) FindMany(ctx context.Context, query *bson.M) ([]*model.Feature, error) {
 	m.ctrl.T.Helper()

@@ -59,6 +59,7 @@ type (
 		UpdateByID(ctx context.Context, id string, document *model.Feature) error
 		UpdateMany(ctx context.Context, query *bson.M, update bson.A, upsert bool) error
 		GetByCode(ctx context.Context, code []string, offset, size int64) ([]*model.Feature, error)
+		FindDescendantsByCode(ctx context.Context, code string, offset, size int64) ([]*model.Feature, error)
 		Count(ctx context.Context, query *bson.M) (int64, error)
 	}
 

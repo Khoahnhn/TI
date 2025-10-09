@@ -479,8 +479,10 @@ func TestFeatureHandle_EditFeature(t *testing.T) {
 				mf.EXPECT().UpdateByID(gomock.Any(), gomock.Any(), gomock.Any()).
 					Return(nil).Times(1)
 
-				mf.EXPECT().UpdateMany(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
-					Return(nil).Times(1)
+				mf.EXPECT().FindDescendantsByCode(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
+					Return([]*model.Feature{
+						{Code: "code"},
+					}, nil).Times(1)
 			},
 			expectedStatus: http.StatusOK,
 		},
@@ -507,36 +509,6 @@ func TestFeatureHandle_EditFeature(t *testing.T) {
 					}, nil).Times(1)
 
 				mf.EXPECT().UpdateByID(gomock.Any(), gomock.Any(), gomock.Any()).
-					Return(errors.New("error")).Times(1)
-			},
-			expectedStatus: http.StatusInternalServerError,
-		},
-		{
-			name: "Update many fail",
-			requestBody: &model.RequestEditFeature{
-				ID:            "id1",
-				Name:          "feat1",
-				Permissions:   []string{"read"},
-				Description:   "des",
-				Weight:        5,
-				ParentFeature: "parent",
-			},
-			setupMock: func(mf *mock_repo.MockFeaturesRepository) {
-				mf.EXPECT().GetByName(gomock.Any(), gomock.Any()).
-					Return(&model.Feature{
-						Code: "id1",
-						Name: "name",
-					}, nil).Times(1)
-
-				mf.EXPECT().GetByName(gomock.Any(), gomock.Any()).
-					Return(&model.Feature{
-						Code: "parent",
-					}, nil).Times(1)
-
-				mf.EXPECT().UpdateByID(gomock.Any(), gomock.Any(), gomock.Any()).
-					Return(nil).Times(1)
-
-				mf.EXPECT().UpdateMany(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
 					Return(errors.New("error")).Times(1)
 			},
 			expectedStatus: http.StatusInternalServerError,
@@ -596,7 +568,7 @@ func TestFeatureHandle_EditFeature(t *testing.T) {
 			expectedStatus: http.StatusInternalServerError,
 		},
 		{
-			name: "update Parent fail",
+			name: "update Parent error",
 			requestBody: &model.RequestEditFeature{
 				ID:            "id1",
 				Name:          "feat1",
